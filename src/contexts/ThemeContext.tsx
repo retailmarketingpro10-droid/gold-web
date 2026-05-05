@@ -14,6 +14,11 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const THEME_STORAGE_KEY = 'gold-web-theme';
+
+const isValidTheme = (value: string | null): value is Theme => {
+  return value === 'default' || value === 'dark' || value === 'luxury' || value === 'minimal';
+};
 
 const themeConfig: Record<Theme, { background: string; card: string; text: string; header: string }> = {
   default: {
@@ -45,14 +50,19 @@ const themeConfig: Record<Theme, { background: string; card: string; text: strin
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme') as Theme;
-      return saved || 'minimal';
+      const saved = localStorage.getItem(THEME_STORAGE_KEY);
+      if (isValidTheme(saved)) return saved;
+
+      // Backward compatibility with older storage key.
+      const legacySaved = localStorage.getItem('theme');
+      if (isValidTheme(legacySaved)) return legacySaved;
     }
-    return 'minimal';
+    return 'default';
   });
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
       localStorage.setItem('theme', theme);
     }
   }, [theme]);
