@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { CustomerLedger } from "@/components/CustomerLedger";
 import { BusinessSettings } from "@/components/BusinessSettings";
@@ -10,7 +10,6 @@ import Auth from "@/components/Auth";
 import RequireAuth from "@/components/RequireAuth";
 import Dashboard from "./pages/Dashboard";
 import Index from "./pages/Index";
-import Landing from "./pages/Landing";
 import Payroll from "./pages/Payroll";
 import POS from "./pages/POS";
 import Analytics from "./pages/Analytics";
@@ -88,8 +87,8 @@ const App = () => {
           <Sonner />
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Routes>
-          {/* Landing page - no layout wrapper */}
-          <Route path="/" element={<Landing />} />
+          {/* Redirect root to auth on initial load */}
+          <Route path="/" element={<Navigate to="/auth" replace />} />
           <Route path="/auth" element={<Auth />} />
           {/* Google Actions Center - public checkout & confirmation */}
           <Route path="/order" element={<GoogleOrderCheckout />} />
