@@ -105,7 +105,6 @@ const App = () => {
           {/* Protected routes with layout */}
           <Route element={<Layout />}>
             {/* Subscription page - accessible when subscription check redirects here */}
-            <Route index element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/pos" element={<RequireAuth><POS /></RequireAuth>} />
             <Route path="/vendors" element={<RequireAuth><Vendors /></RequireAuth>} />
